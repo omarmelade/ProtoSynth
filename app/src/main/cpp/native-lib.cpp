@@ -14,20 +14,6 @@ Java_com_omarmelade_studio_protosynth_MainActivity_stringFromJNI( JNIEnv *env, j
 }
 
 JNIEXPORT void JNICALL
-Java_com_omarmelade_studio_protosynth_MainActivity_touchEvent(JNIEnv *env, jobject obj, jint action) {
-    switch (action) {
-        case AMOTION_EVENT_ACTION_DOWN :
-            audioEngine->setToneOn(true);
-            break;
-        case AMOTION_EVENT_ACTION_UP :
-            audioEngine->setToneOn(false);
-            break;
-        default :
-            break;
-    }
-}
-
-JNIEXPORT void JNICALL
 Java_com_omarmelade_studio_protosynth_MainActivity_playEngine(JNIEnv *env, jobject obj,
                                                               jboolean play) {
     audioEngine->setToneOn(play);

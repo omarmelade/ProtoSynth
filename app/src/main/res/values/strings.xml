@@ -2,4 +2,7 @@
     <string name="app_name">ProtoSynth</string>
 
     <string name="tap_anywhere">Tap anywhere</string>
+    <string name="action_load">Charger</string>
+    <string name="action_save">Sauvegarder</string>
+    <string name="action_clear">Supprimer</string>
 </resources>
