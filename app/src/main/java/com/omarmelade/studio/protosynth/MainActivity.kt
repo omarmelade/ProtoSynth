@@ -1,28 +1,26 @@
 package com.omarmelade.studio.protosynth
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.net.Uri
+import android.content.pm.PackageManager
 import android.os.*
-import android.provider.DocumentsContract
+import android.os.Environment.getExternalStorageDirectory
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
-import androidx.core.content.FileProvider
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.files.fileChooser
 import kotlinx.coroutines.*
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import java.io.File
-import java.lang.Exception
-import java.security.AccessController.getContext
 import kotlin.concurrent.thread
 
 
@@ -32,15 +30,39 @@ class MainActivity : AppCompatActivity() {
     private val sharedPrefFile = "kotlinsharedpreference"
 
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var flist: FreqList;
+    private lateinit var flist: FreqList
     private lateinit var adapter: ArrayAdapter<Double>
-    private var played = false;
-    private var tempo: Long = 1000;
-    private var mHandler: Handler = Handler()
+    private var played = false
+    private var tempo: Long = 1000
 
-
-    val CREATE_FILE = 1
+    private val READ_STORAGE_PERMISSION_REQUEST_CODE = 41;
     // creation de la vue
+
+    private fun checkPermission(permission: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this@MainActivity, permission) == PackageManager.PERMISSION_DENIED) {
+
+            // Requesting the permission
+            ActivityCompat.requestPermissions(this@MainActivity, arrayOf(permission), requestCode)
+        } else {
+            Toast.makeText(this@MainActivity, "Permission already granted", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // This function is called when the user accepts or decline the permission.
+    // Request Code is used to check which permission called this function.
+    // This request code is provided when the user is prompt for permission.
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>,
+                                            grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+         if (requestCode == READ_STORAGE_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this@MainActivity, "Storage Permission Granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@MainActivity, "Storage Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +70,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        // Liste de frequences
+        // demande la permission d'ecrire
+        checkPermission(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            READ_STORAGE_PERMISSION_REQUEST_CODE)
+        checkPermission(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            READ_STORAGE_PERMISSION_REQUEST_CODE)
+
+
+        // Liste de frequences modifiable (Mutable)
         val mlist: MutableList<Double> = ArrayList();
+        // on stocke cette liste dans un objet publique
         flist = FreqList(mlist);
+
+        // ---------- Recuperation de la vue
+
+        // listView
         val freq_list = findViewById<ListView>(R.id.freq_list)
 
         // input
@@ -63,14 +99,25 @@ class MainActivity : AppCompatActivity() {
         val btn_sin_sqrt = findViewById<Switch>(R.id.btn_sin_sqrt)
         val freq_add_btn = findViewById<Button>(R.id.freq_btn)
 
-        // adapter for Freq Liste
-        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, flist.list)
+
+        // ---------- Creation des adapteurs et listeners
+
+        // adapter for Freq Liste, il regarde la liste et observe les changements
+        adapter = ArrayAdapter<Double>(this, android.R.layout.simple_spinner_item, flist.list)
+        // on affecte l'adapter a la liste
         freq_list.adapter = adapter
 
+        // on defini les conditions de sauvegarde
         sharedPreferences = this.getSharedPreferences(
             sharedPrefFile,
             Context.MODE_PRIVATE
         )
+
+        freq_list.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedItemText = parent.getItemAtPosition(position)
+                buttonOpenDialogClicked(flist, selectedItemText.toString().toDouble(), position)
+            }
 
         freq_add_btn.setOnClickListener(View.OnClickListener { view ->
             val f = freqInput.text.toString();
@@ -117,6 +164,48 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    // Demande la permission de lecture
+
+
+
+    private fun buttonOpenDialogClicked(freq_list: FreqList, previousfreq: Double, pos : Int) {
+
+        val dialog = MaterialDialog(this)
+            .noAutoDismiss()
+            .customView(R.layout.modify_frequency)
+
+        // recupere les composants de la vue "modify_frequency"
+        val editFreq = dialog.findViewById<EditText>(R.id.editTextNumberDecimal)
+        val okButton = dialog.findViewById<Button>(R.id.button_ok)
+        val cancelBtn = dialog.findViewById<Button>(R.id.button_cancel)
+
+        editFreq.setText(previousfreq.toString())
+
+        // lors de l'appui sur okButton
+        okButton.setOnClickListener {
+            // si le champ de text n'est pas vide
+            if(editFreq.text.toString().isNotEmpty() && !editFreq.text.toString().toDouble().equals(previousfreq)) {
+                // on recupere l'element de la liste correspondant et on le modifie avec la nouvelle valeur
+                freq_list.list[pos] = editFreq.text.toString().toDouble()
+                // on notifie l'adapter des changements sur la liste
+                adapter.notifyDataSetChanged()
+                // on cache le dialog
+            }else {
+                Toast.makeText(this@MainActivity, "Content where identical", Toast.LENGTH_SHORT).show()
+            }
+            dialog.dismiss()
+        }
+
+
+        cancelBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+
+
     // creation du menu
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -128,34 +217,19 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_load -> {
+                loadInSharedPreferences(flist = flist, sharedPreferences = sharedPreferences, applicationContext = applicationContext, adapter = adapter)
 
-                val str : String = sharedPreferences.getString("tab", "").toString();
-                val strFList = import(str)
-                adapter.addAll(strFList.list)
-                adapter.notifyDataSetChanged()
+/*                val initialFolder = File(getExternalStorageDirectory(), "Download")
 
-                var load_toast = "Echec du chargement"
-                if(!adapter.isEmpty){
-                    load_toast = "Chargement reussi"
-                }
-                Toast.makeText(applicationContext, load_toast, Toast.LENGTH_SHORT).show()
-
+                MaterialDialog(this).show {
+                    fileChooser(initialDirectory = initialFolder, context = this@MainActivity) { dialog, file ->
+                        // File selected
+                    }
+                }*/
                 true
             }
             R.id.action_save ->{
-                val strFList = flist.export();
-                var save_toast = "Echec de la sauvegarde"
-
-                if(strFList.isNotEmpty()){
-                    val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-                    editor.putString("tab",strFList)
-                    editor.apply()
-                    editor.commit()
-                    save_toast ="Sauvegarde effectué"
-                }
-
-                Toast.makeText(applicationContext, save_toast, Toast.LENGTH_SHORT).show()
-
+                saveInSharedPreferences(flist = flist, sharedPreferences = sharedPreferences, applicationContext = applicationContext)
                 return true
             }
             R.id.action_clear ->{
@@ -184,7 +258,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("HandlerLeak")
     private fun play_sound(list: MutableList<Double>) {
         played = !played
-        play_stop(played)
+        playStop(played)
         if(list.isNotEmpty()) {
 
             // color the sound played
@@ -206,6 +280,7 @@ class MainActivity : AppCompatActivity() {
 
         var i = 0;
         var max = list.size
+        var pauseZero = played
         while (played) {
             val index = i % max
 
@@ -217,8 +292,17 @@ class MainActivity : AppCompatActivity() {
             mHandler.sendMessage(msg)
             Log.i("MyActivity","HEEEEEEEEEEEEEEEEEE" + index)
 */
+            if(list[ i % max ] != 0.0){
+                if(!pauseZero){
+                    pauseZero = true
+                    playStop(pauseZero)
+                }
+                setFreq(list[ i % max ])
+            }else{
+                pauseZero = false
+                playStop(pauseZero)
+            }
 
-            setFreq(list[ i % max ])
             Thread.sleep(tempo)
 
 /*
@@ -233,11 +317,11 @@ class MainActivity : AppCompatActivity() {
             i++;
         }
         played = false
-        play_stop(played)
+        playStop(played)
     }
 
 
-    fun play_stop(boolean: Boolean) {
+    fun playStop(boolean: Boolean) {
         playEngine(boolean);
     }
 
@@ -249,8 +333,7 @@ class MainActivity : AppCompatActivity() {
 
 
     /**
-     * A native method that is implemented by the 'protosynth' native library,
-     * which is packaged with this application.
+     * Native method to access sound streams
      */
     external fun stringFromJNI(): String
     private external fun startEngine();

@@ -10,7 +10,7 @@
 
 
 double Oscillator::freq() const { return frequency; }
-void Oscillator::freq( double f ) {frequency = f;};
+void Oscillator::freq( double f ) { frequency = f; }
 
 
 void Oscillator::setSampleRate(int32_t sampleRate) {
@@ -31,7 +31,7 @@ void Oscillator::render(float *audioData, int32_t numFrames) {
 
             if(isSin()){
                 // Calculates the next sample value for the sine wave.
-                audioData[i] = (float) (sin(phase_) * AMPLITUDE);
+                audioData[i] = (float) (cos(phase_) * AMPLITUDE);
             }else{
                 // Calculates the next sample value for the sine wave.
                 audioData[i] = (float) (sqrt(phase_) * AMPLITUDE);

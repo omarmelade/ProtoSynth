@@ -5,4 +5,7 @@
     <string name="action_load">Charger</string>
     <string name="action_save">Sauvegarder</string>
     <string name="action_clear">Supprimer</string>
+    <string name="cancel">Cancel</string>
+    <string name="modify">Modify</string>
+    <string name="modify_frequency">Modify frequency</string>
 </resources>
