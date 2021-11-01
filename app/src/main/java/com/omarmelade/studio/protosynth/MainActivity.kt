@@ -217,6 +217,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_load -> {
+
                 loadInSharedPreferences(flist = flist, sharedPreferences = sharedPreferences, applicationContext = applicationContext, adapter = adapter)
 
 /*                val initialFolder = File(getExternalStorageDirectory(), "Download")

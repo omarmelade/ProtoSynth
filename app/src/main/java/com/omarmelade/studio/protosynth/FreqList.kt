@@ -1,7 +1,6 @@
 package com.omarmelade.studio.protosynth
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.SharedPreferences
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -41,16 +40,21 @@ fun saveInSharedPreferences(sharedPreferences: SharedPreferences, flist: FreqLis
 }
 
 fun loadInSharedPreferences(sharedPreferences: SharedPreferences, flist: FreqList, applicationContext: Context, adapter: ArrayAdapter<Double>){
-    val str : String = sharedPreferences.getString("tab", "").toString();
-    val strFList = import(str)
-    adapter.addAll(strFList.list)
-    adapter.notifyDataSetChanged()
 
     var load_toast = "Echec du chargement"
-    if(!adapter.isEmpty){
-        load_toast = "Chargement reussi"
+    if(sharedPreferences.getString("tab", "").toString() != "") {
+        val str: String = sharedPreferences.getString("tab", "").toString();
+        val strFList = import(str)
+        adapter.addAll(strFList.list)
+        adapter.notifyDataSetChanged()
+
+        if (!adapter.isEmpty) {
+            load_toast = "Chargement reussi"
+        }
+        Toast.makeText(applicationContext, load_toast, Toast.LENGTH_SHORT).show()
+    }else{
+        Toast.makeText(applicationContext, load_toast, Toast.LENGTH_SHORT).show()
     }
-    Toast.makeText(applicationContext, load_toast, Toast.LENGTH_SHORT).show()
 
 }
 

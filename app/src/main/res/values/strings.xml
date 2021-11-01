@@ -8,4 +8,18 @@
     <string name="cancel">Cancel</string>
     <string name="modify">Modify</string>
     <string name="modify_frequency">Modify frequency</string>
+    <string name="select">select</string>
+    <string name="select_name">SELECT</string>
+    <string name="fast_backward_desc">fast backward</string>
+    <string name="backward_desc">backward</string>
+    <string name="record_desc">record</string>
+    <string name="forward_desc">forward</string>
+    <string name="fast_forward_desc">fast forward</string>
+    <string name="copy_desc">copy</string>
+    <string name="copy">COPY</string>
+    <string name="paste_desc">paste</string>
+    <string name="paste">PASTE</string>
+    <string name="play_desc">play</string>
+    <string name="pause_desc">pause</string>
+    <string name="stop_desc">stop</string>
 </resources>
