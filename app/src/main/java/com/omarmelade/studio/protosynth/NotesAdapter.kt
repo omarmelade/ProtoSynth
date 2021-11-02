@@ -1,5 +1,6 @@
 package com.omarmelade.studio.protosynth
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +30,14 @@ class NotesAdapter(
         )
     }
 
+
     // ajoute une note a la liste et notifie le view holder
     fun addNotes(note : Note){
         notes.add(note)
         notifyItemInserted(notes.size - 1)
+    }
+
+    fun modifySelectedItems(){
     }
 
     // permet de gerer les elements du type Note affiché
@@ -40,13 +45,27 @@ class NotesAdapter(
         val curNotes = notes[position]
 
         var txtViewNotes = holder.itemView.tvNotes
+        var itemV = holder.itemView;
 
-        holder.itemView.apply {
+        itemV.apply {
             tvNotes.text = curNotes.note
         }
 
-        holder.itemView.tvNotes.setOnClickListener{
-            Toast.makeText(holder.itemView.context, "hello form " + txtViewNotes.text, Toast.LENGTH_SHORT).show()
+        itemV.tvNotes.setOnClickListener{
+            if(itemV.isSelected){
+                itemV.isSelected = false;
+                itemV.setBackgroundColor(Color.WHITE)
+                txtViewNotes.setTextColor(Color.GRAY)
+            }else{
+                itemV.isSelected = true;
+                itemV.setBackgroundColor(Color.GRAY)
+                txtViewNotes.setTextColor(Color.WHITE)
+            }
+        }
+
+        itemV.tvNotes.setOnLongClickListener { view ->
+            Toast.makeText(holder.itemView.context, "hello form long click  ", Toast.LENGTH_SHORT).show()
+            return@setOnLongClickListener true
         }
     }
 

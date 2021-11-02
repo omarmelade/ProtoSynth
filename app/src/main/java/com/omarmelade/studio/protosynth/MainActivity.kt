@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             // Requesting the permission
             ActivityCompat.requestPermissions(this@MainActivity, arrayOf(permission), requestCode)
         } else {
-            Toast.makeText(this@MainActivity, "Permission already granted", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this@MainActivity, "Permission already granted", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -70,7 +70,6 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-
         // demande la permission d'ecrire et de lire
         checkPermission(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -93,6 +92,9 @@ class MainActivity : AppCompatActivity() {
         rvNotesList.adapter = notesAdapter
         rvNotesList.layoutManager = LinearLayoutManager(this)
 
+        forw.setOnClickListener {
+
+        }
 
         // demare le audio engine
         startEngine();
