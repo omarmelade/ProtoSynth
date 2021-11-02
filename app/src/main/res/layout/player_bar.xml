@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:orientation="horizontal"
@@ -18,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#00FFFFFF"
+            android:background="#00FA0000"
             android:contentDescription="@string/play_desc"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_forward" />
@@ -28,7 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#00FFFFFF"
+            android:background="#00BA1A1A"
+            android:backgroundTint="#E10A0A"
             android:contentDescription="@string/pause_desc"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_pause" />

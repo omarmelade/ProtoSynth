@@ -22,81 +22,23 @@ android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="5"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/freq_list"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvNotesList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </ListView>
+            </androidx.recyclerview.widget.RecyclerView>
+
 
         </LinearLayout>
 
-        <LinearLayout
+        <include
+            layout="@layout/player_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="7"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/tempo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:layout_weight="4"
-                    android:inputType="numberDecimal" />
-
-                <EditText
-                    android:id="@+id/freq"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:layout_weight="4"
-                    android:ems="10"
-                    android:inputType="numberDecimal"
-                    tools:ignore="SpeakableTextPresentCheck" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/tempo_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:layout_weight="2"
-                    android:text="set tempo" />
-
-                <Button
-                    android:id="@+id/freq_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:layout_weight="2"
-                    android:padding="8dp"
-                    android:text="Add Frequency" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/play_btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:layout_weight="3"
-                android:text="Play" />
-        </LinearLayout>
+            android:layout_height="wrap_content"></include>
 
     </LinearLayout>
 

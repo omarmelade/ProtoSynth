@@ -8,7 +8,7 @@ static AudioEngine *audioEngine = new AudioEngine();
 extern "C" {
 
 JNIEXPORT jstring JNICALL
-Java_com_omarmelade_studio_protosynth_MainActivity_stringFromJNI( JNIEnv *env, jobject /* this */) {
+Java_com_omarmelade_studio_protosynth_MainActivity_stringFromJNI(JNIEnv *env, jobject /* this */) {
     std::string hello = "Hello from C++";
     return env->NewStringUTF(hello.c_str());
 }
@@ -21,7 +21,7 @@ Java_com_omarmelade_studio_protosynth_MainActivity_playEngine(JNIEnv *env, jobje
 
 JNIEXPORT void JNICALL
 Java_com_omarmelade_studio_protosynth_MainActivity_setIsSin(JNIEnv *env, jobject obj,
-                                                              jboolean sinus) {
+                                                            jboolean sinus) {
     audioEngine->setisSin(sinus);
 }
 

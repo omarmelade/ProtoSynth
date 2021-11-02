@@ -6,21 +6,20 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.*
-import android.os.Environment.getExternalStorageDirectory
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
-import com.afollestad.materialdialogs.files.fileChooser
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.player_bar.*
 import kotlinx.coroutines.*
-import java.io.File
 import kotlin.concurrent.thread
 
 
@@ -28,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     // fichier shared preferences
     private val sharedPrefFile = "kotlinsharedpreference"
+
+    private lateinit var notesAdapter : NotesAdapter
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var flist: FreqList
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        // demande la permission d'ecrire
+        // demande la permission d'ecrire et de lire
         checkPermission(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             READ_STORAGE_PERMISSION_REQUEST_CODE)
@@ -78,95 +79,27 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             READ_STORAGE_PERMISSION_REQUEST_CODE)
 
+        // cree l'adapter avec une liste
+        notesAdapter = NotesAdapter(mutableListOf())
 
-        // Liste de frequences modifiable (Mutable)
-        val mlist: MutableList<Double> = ArrayList();
-        // on stocke cette liste dans un objet publique
-        flist = FreqList(mlist);
+        notesAdapter.addNotes(Note.CBIS3)
 
-        // ---------- Recuperation de la vue
+        // ajoute les 32 elements "BLANK"
+        for (x in 1..31) {
+            notesAdapter.addNotes(Note.BLANK)
+        }
 
-        // listView
-        val freq_list = findViewById<ListView>(R.id.freq_list)
-
-        // input
-        val freqInput = findViewById<EditText>(R.id.freq)
-        val tempoInput = findViewById<EditText>(R.id.tempo)
-
-        // btns
-        val play_btn = findViewById<Button>(R.id.play_btn)
-        val tempo_btn = findViewById<TextView>(R.id.tempo_btn)
-        val btn_sin_sqrt = findViewById<Switch>(R.id.btn_sin_sqrt)
-        val freq_add_btn = findViewById<Button>(R.id.freq_btn)
+        // ajoute l'adapter a la liste pour gerer son fonctionnement
+        rvNotesList.adapter = notesAdapter
+        rvNotesList.layoutManager = LinearLayoutManager(this)
 
 
-        // ---------- Creation des adapteurs et listeners
-
-        // adapter for Freq Liste, il regarde la liste et observe les changements
-        adapter = ArrayAdapter<Double>(this, android.R.layout.simple_spinner_item, flist.list)
-        // on affecte l'adapter a la liste
-        freq_list.adapter = adapter
-
-        // on defini les conditions de sauvegarde
-        sharedPreferences = this.getSharedPreferences(
-            sharedPrefFile,
-            Context.MODE_PRIVATE
-        )
-
-        freq_list.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedItemText = parent.getItemAtPosition(position)
-                buttonOpenDialogClicked(flist, selectedItemText.toString().toDouble(), position)
-            }
-
-        freq_add_btn.setOnClickListener(View.OnClickListener { view ->
-            val f = freqInput.text.toString();
-            if(f.isNotEmpty()){
-                flist.list.add(f.toDouble());
-                freqInput.text.clear()
-                adapter.notifyDataSetChanged()
-            }else{
-                Toast.makeText(this@MainActivity, "La fréquence est necessaire", Toast.LENGTH_SHORT).show()
-            }
-
-        })
-
-        btn_sin_sqrt.setOnClickListener(View.OnClickListener { v ->
-            setIsSin(!btn_sin_sqrt.isChecked)
-        })
-
-
-        tempo_btn.setOnClickListener(View.OnClickListener { v ->
-            val value = tempoInput.text.toString()
-            if(value.isNotEmpty()){
-                val bpm = value.toDouble()
-                tempo = ((60 / bpm) * 1000).toLong();
-                Toast.makeText(this@MainActivity, "tempo mis a $bpm", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this@MainActivity, "Le tempo est necessaire", Toast.LENGTH_SHORT).show()
-            }
-
-            tempoInput.text.clear()
-        })
-
-        play_btn.setOnClickListener(View.OnClickListener { v ->
-            if(played){
-                played = !played
-            }else{
-                if(flist.list.isNotEmpty())
-                    play_sound(flist.list)
-                else
-                    Toast.makeText(applicationContext, "Ajouté au moins une fréquence", Toast.LENGTH_SHORT)
-            }
-        })
-
+        // demare le audio engine
         startEngine();
     }
 
 
     // Demande la permission de lecture
-
-
 
     private fun buttonOpenDialogClicked(freq_list: FreqList, previousfreq: Double, pos : Int) {
 
@@ -247,6 +180,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+/*
     private fun updateListColor(index: Int, color: Int) {
         val freq_list = findViewById<ListView>(R.id.freq_list)
         if(freq_list.getChildAt(index) != null){
@@ -255,6 +189,7 @@ class MainActivity : AppCompatActivity() {
             freq_list.getChildAt( index ).setBackgroundColor(color)
         }
     }
+*/
 
     @SuppressLint("HandlerLeak")
     private fun play_sound(list: MutableList<Double>) {
