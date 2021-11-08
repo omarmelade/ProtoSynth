@@ -1,5 +1,5 @@
 //
-// Created by omark on 19/10/2021.
+// Created by omarmelade on 19/10/2021.
 //
 
 #include <android/log.h>
@@ -38,6 +38,7 @@ void AudioEngine::setFreq(double f){
 bool AudioEngine::start() {
     AAudioStreamBuilder *streamBuilder;
     AAudio_createStreamBuilder(&streamBuilder);
+    AAudioStreamBuilder_setSharingMode(streamBuilder, AAUDIO_SHARING_MODE_SHARED);
     AAudioStreamBuilder_setFormat(streamBuilder, AAUDIO_FORMAT_PCM_FLOAT);
     AAudioStreamBuilder_setChannelCount(streamBuilder, 1);
     AAudioStreamBuilder_setPerformanceMode(streamBuilder, AAUDIO_PERFORMANCE_MODE_NONE);
@@ -81,6 +82,7 @@ void AudioEngine::restart(){
         restartingLock.unlock();
     }
 }
+
 
 void AudioEngine::stop() {
     if (stream_ != nullptr) {

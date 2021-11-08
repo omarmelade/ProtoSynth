@@ -1,12 +1,9 @@
 package com.omarmelade.studio.protosynth
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.*
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
@@ -23,7 +20,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_notes.view.*
 import kotlinx.android.synthetic.main.player_bar.*
 import kotlinx.coroutines.*
-import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
@@ -111,14 +107,21 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // soundPlayer
+        var player : SoundPlayer = SoundPlayer();
+
         play.setOnClickListener {
             val notes = notesAdapter.getAllNotes()
             System.err.println(notes)
-            play_sound(notes)
+            player.play_sound(notes)
+        }
+
+        stop.setOnClickListener {
+            player.setPlayedBool(false)
         }
 
         // demare le audio engine
-        startEngine();
+        player.startAudioEngine();
     }
 
 
@@ -203,98 +206,11 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-/*
-    private fun updateListColor(index: Int, color: Int) {
-        val freq_list = findViewById<ListView>(R.id.freq_list)
-        if(freq_list.getChildAt(index) != null){
-            freq_list.smoothScrollToPosition( index )
-            Log.e("MyActivity", "index : $index color : $color")
-            freq_list.getChildAt( index ).setBackgroundColor(color)
-        }
-    }
-*/
-
-    @SuppressLint("HandlerLeak")
-    private fun play_sound(list: MutableList<Note>) {
-        played = !played
-        playStop(played)
-        if(list.isNotEmpty()) {
-
-            // color the sound played
-
-           /* mHandler = object : Handler() {
-                override fun handleMessage(msg: Message) {
-                    if (msg.arg1 >= 0)
-                        updateListColor(msg.arg1, msg.arg2)
-                }
-            }*/
-
-            thread(start = true, name = "playThread") {
-                playList(list)
-            }
-        }
-    }
-
-    private fun playList(list: MutableList<Note>) {
-        System.err.println(list)
-
-        var i = 0;
-        var max = list.size
-        var pauseZero = played
-        while (played) {
-            val index = i % max
-
-            // color things
-/*
-            var msg = Message.obtain()
-            msg.arg1 = index;
-            msg.arg2 = Color.BLUE
-            mHandler.sendMessage(msg)
-            Log.i("MyActivity","HEEEEEEEEEEEEEEEEEE" + index)
-*/
-            if(list[ i % max ].frequency != 0.0){
-                if(!pauseZero){
-                    pauseZero = true
-                    playStop(pauseZero)
-                }
-                setFreq(list[ i % max ].frequency)
-            }else{
-                pauseZero = false
-                playStop(pauseZero)
-            }
-
-            Thread.sleep(tempo)
-
-/*
-            Log.i("MyActivity","HEEEEEEEEEEEEEEEEEE" + index)
-
-            var msgClose = Message.obtain()
-            msgClose.arg1 = index;
-            msgClose.arg2 = Color.WHITE
-            mHandler.sendMessage(msgClose)
-*/
-
-            i++;
-        }
-        played = false
-        playStop(played)
-    }
 
 
-    fun playStop(boolean: Boolean) {
-        playEngine(boolean);
-    }
-
-
-    override fun onDestroy() {
-        stopEngine();
-        super.onDestroy()
-    }
-
-
-    /**
+/*    *//**
      * Native method to access sound streams
-     */
+     *//*
     external fun stringFromJNI(): String
     private external fun startEngine();
     private external fun stopEngine();
@@ -308,6 +224,6 @@ class MainActivity : AppCompatActivity() {
         init {
             System.loadLibrary("protosynth")
         }
-    }
+    }*/
 }
 

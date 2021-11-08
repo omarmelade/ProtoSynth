@@ -13,6 +13,7 @@ class AudioEngine {
 public:
     bool start();
     void stop();
+    bool pause();
     void restart();
     void setToneOn(bool isToneOn);
 
