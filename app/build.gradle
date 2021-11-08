@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.31'
+    // enable to call variable without "findViewById"
     id 'kotlin-android-extensions'
 }
 

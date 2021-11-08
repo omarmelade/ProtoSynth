@@ -13,8 +13,9 @@ enum class Note {
     D3(293.66, "D3");
 
 
-    var frequency : Double? = null
-    var note : String? = null
+
+    var frequency: Double = 0.0
+    var note: String? = null
 
     constructor()
 
@@ -26,7 +27,38 @@ enum class Note {
         this.note = printableName
     }
 
+
+
+    fun next(): Note {
+        val values = enumValues<Note>()
+        val nextOrdinal = (ordinal + 1) % values.size
+        return values[nextOrdinal]
+    }
+
+    fun prev(): Note {
+        val values = enumValues<Note>()
+        val nextOrdinal = (ordinal - 1 + values.size) % values.size
+        return values[nextOrdinal]
+    }
+
     companion object {
         fun getNumberOfNotes() = values().size
+
+        fun getNote(name : String): Note {
+            for (v in values())
+                if(v.note.equals(name))
+                    return v
+            return BLANK
+        }
+
+        private var lastNoteId = 0
+        fun createNoteList(numNotes: Int): MutableList<Note> {
+            val notes = mutableListOf<Note>()
+            for (i in 1..numNotes) {
+                notes.add(BLANK)
+            }
+            return notes
+        }
     }
+
 }

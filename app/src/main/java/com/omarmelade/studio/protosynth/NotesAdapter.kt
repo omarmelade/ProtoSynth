@@ -4,21 +4,21 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_notes.view.*
-import java.security.AccessController.getContext
 
 class NotesAdapter(
 
     // la liste modifiable de notes
-    private val notes: MutableList<Note>
+    private var notes: MutableList<Note>
 
 ) : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
 
+    private var selectedItems : MutableList<Int> = mutableListOf()
+
     // le view holder permet de gerer les elements affiché de la liste
-    class NotesViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)
+    class NotesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesViewHolder {
         return NotesViewHolder(
@@ -30,44 +30,55 @@ class NotesAdapter(
         )
     }
 
+    fun getAllNotes(): MutableList<Note>{
+        return notes
+    }
+
+    fun selectedItems(): MutableList<Int> {
+        return selectedItems
+    }
 
     // ajoute une note a la liste et notifie le view holder
-    fun addNotes(note : Note){
+    fun addNotes(note: Note) {
         notes.add(note)
         notifyItemInserted(notes.size - 1)
     }
 
-    fun modifySelectedItems(){
+    private fun changeColorTxt(v : View, back : Int, txt : Int){
+        v.setBackgroundColor(back)
+        v.tvNotes.setTextColor(txt)
     }
 
     // permet de gerer les elements du type Note affiché
     override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
-        val curNotes = notes[position]
+        var curNotes = notes[position]
 
         var txtViewNotes = holder.itemView.tvNotes
-        var itemV = holder.itemView;
+        var itemV = holder.itemView
 
         itemV.apply {
-            tvNotes.text = curNotes.note
+            txtViewNotes.text = curNotes.note
         }
 
-        itemV.tvNotes.setOnClickListener{
-            if(itemV.isSelected){
-                itemV.isSelected = false;
-                itemV.setBackgroundColor(Color.WHITE)
-                txtViewNotes.setTextColor(Color.GRAY)
-            }else{
-                itemV.isSelected = true;
-                itemV.setBackgroundColor(Color.GRAY)
-                txtViewNotes.setTextColor(Color.WHITE)
+        txtViewNotes.setOnClickListener {
+            if (selectedItems.contains(position)) {
+                selectedItems.remove(position)
+                changeColorTxt(itemV, Color.WHITE, Color.GRAY)
+            } else {
+                selectedItems.add(position)
+                changeColorTxt(itemV, Color.GRAY, Color.WHITE)
             }
+            println("click")
         }
 
-        itemV.tvNotes.setOnLongClickListener { view ->
-            Toast.makeText(holder.itemView.context, "hello form long click  ", Toast.LENGTH_SHORT).show()
+        txtViewNotes.setOnLongClickListener { view ->
+            Toast.makeText(holder.itemView.context, "hello form long click  ", Toast.LENGTH_SHORT)
+                .show()
             return@setOnLongClickListener true
         }
     }
+
+
 
     override fun getItemCount(): Int {
         return notes.size

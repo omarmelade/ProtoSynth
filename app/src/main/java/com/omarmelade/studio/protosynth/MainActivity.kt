@@ -14,10 +14,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_notes.view.*
 import kotlinx.android.synthetic.main.player_bar.*
 import kotlinx.coroutines.*
 import kotlin.concurrent.thread
@@ -79,21 +82,39 @@ class MainActivity : AppCompatActivity() {
             READ_STORAGE_PERMISSION_REQUEST_CODE)
 
         // cree l'adapter avec une liste
-        notesAdapter = NotesAdapter(mutableListOf())
+        notesAdapter = NotesAdapter(Note.createNoteList(32))
 
-        notesAdapter.addNotes(Note.CBIS3)
+        val itemDecoration: RecyclerView.ItemDecoration =
+            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        rvNotesList.addItemDecoration(itemDecoration)
 
-        // ajoute les 32 elements "BLANK"
-        for (x in 1..31) {
-            notesAdapter.addNotes(Note.BLANK)
-        }
 
         // ajoute l'adapter a la liste pour gerer son fonctionnement
         rvNotesList.adapter = notesAdapter
         rvNotesList.layoutManager = LinearLayoutManager(this)
 
         forw.setOnClickListener {
+            val sel = notesAdapter.selectedItems()
+            val notes = notesAdapter.getAllNotes()
+            for (i in sel){
+                notes[i] = notes[i].next()
+                notesAdapter.notifyItemChanged(i)
+            }
+        }
 
+        back.setOnClickListener {
+            val sel = notesAdapter.selectedItems()
+            val notes = notesAdapter.getAllNotes()
+            for (i in sel){
+                notes[i] = notes[i].prev()
+                notesAdapter.notifyItemChanged(i)
+            }
+        }
+
+        play.setOnClickListener {
+            val notes = notesAdapter.getAllNotes()
+            System.err.println(notes)
+            play_sound(notes)
         }
 
         // demare le audio engine
@@ -194,7 +215,7 @@ class MainActivity : AppCompatActivity() {
 */
 
     @SuppressLint("HandlerLeak")
-    private fun play_sound(list: MutableList<Double>) {
+    private fun play_sound(list: MutableList<Note>) {
         played = !played
         playStop(played)
         if(list.isNotEmpty()) {
@@ -214,7 +235,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun playList(list: MutableList<Double>) {
+    private fun playList(list: MutableList<Note>) {
+        System.err.println(list)
 
         var i = 0;
         var max = list.size
@@ -230,12 +252,12 @@ class MainActivity : AppCompatActivity() {
             mHandler.sendMessage(msg)
             Log.i("MyActivity","HEEEEEEEEEEEEEEEEEE" + index)
 */
-            if(list[ i % max ] != 0.0){
+            if(list[ i % max ].frequency != 0.0){
                 if(!pauseZero){
                     pauseZero = true
                     playStop(pauseZero)
                 }
-                setFreq(list[ i % max ])
+                setFreq(list[ i % max ].frequency)
             }else{
                 pauseZero = false
                 playStop(pauseZero)
