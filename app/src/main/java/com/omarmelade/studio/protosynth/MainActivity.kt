@@ -23,68 +23,15 @@ import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
-    // fichier shared preferences
-    private val sharedPrefFile = "kotlinsharedpreference"
-
     private lateinit var notesAdapter: NotesAdapter
-
-    private lateinit var sharedPreferences: SharedPreferences
-
-    private val READ_STORAGE_PERMISSION_REQUEST_CODE = 41
-    // creation de la vue
-
-    private fun checkPermission(permission: String, requestCode: Int) {
-        if (ContextCompat.checkSelfPermission(
-                this@MainActivity,
-                permission
-            ) == PackageManager.PERMISSION_DENIED
-        ) {
-
-            // Requesting the permission
-            ActivityCompat.requestPermissions(this@MainActivity, arrayOf(permission), requestCode)
-        } else {
-            Toast.makeText(this@MainActivity, "Permission already granted", Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
-
-    // This function is called when the user accepts or decline the permission.
-    // Request Code is used to check which permission called this function.
-    // This request code is provided when the user is prompt for permission.
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == READ_STORAGE_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this@MainActivity, "Storage Permission Granted", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(this@MainActivity, "Storage Permission Denied", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
-        // demande la permission d'ecrire et de lire
-/*        checkPermission(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            READ_STORAGE_PERMISSION_REQUEST_CODE
-        )
-        checkPermission(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            READ_STORAGE_PERMISSION_REQUEST_CODE
-        )*/
-
         // cree l'adapter avec une liste
-        notesAdapter = NotesAdapter(Note.createNoteList(32))
+        notesAdapter = NotesAdapter(Note.createNoteList(8))
 
 
         val itemDecoration: RecyclerView.ItemDecoration =
@@ -98,9 +45,9 @@ class MainActivity : AppCompatActivity() {
 
         registerForContextMenu(rvNotesList)
 
-        forw.setOnClickListener {
+        forwBtn.setOnClickListener {
             val sel = notesAdapter.selectedItems()
-            System.err.println("from forw click : $sel")
+            //System.err.println("from forw click : $sel")
             val notes = notesAdapter.getAllNotes()
             for (i in sel) {
                 notes[i] = notes[i].next()
@@ -108,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        back.setOnClickListener {
+        backBtn.setOnClickListener {
             val sel = notesAdapter.selectedItems()
             val notes = notesAdapter.getAllNotes()
             for (i in sel) {
@@ -120,59 +67,28 @@ class MainActivity : AppCompatActivity() {
         // soundPlayer
         val player = SoundPlayer()
 
-        play.setOnClickListener {
-            if(player.getPlayedBool()){
-                play.setImageResource(R.drawable.ic_pause)
+        playBtn.setOnClickListener {
+            // On demarre le moteur audio
+            if(!player.getStarted()){
+                player.startAudioEngine();
+            }
+
+            // on modifie l'image du boutton
+            if(!player.getPlayedBool()){
+                playBtn.setImageResource(R.drawable.ic_pause)
             }else{
-                play.setImageResource(R.drawable.ic_forward)
+                playBtn.setImageResource(R.drawable.ic_forward)
             }
-            val notes = notesAdapter.getAllNotes()
+
+            val notes = notesAdapter.getAllNotes()  // on recupere la liste des notes
             System.err.println(notes)
-            player.playSound(notes)
+            player.playSound(notes) // on joue la liste
         }
 
-        stop.setOnClickListener {
-            player.setPlayedBool(false)
-        }
-
-        // demare le audio engine
-        player.startAudioEngine()
-    }
-
-
-
-    // creation du menu
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.option_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_load -> {
-
-
-/*                val initialFolder = File(getExternalStorageDirectory(), "Download")
-
-                MaterialDialog(this).show {
-                    fileChooser(initialDirectory = initialFolder, context = this@MainActivity) { dialog, file ->
-                        // File selected
-                    }
-                }*/
-                true
-            }
-            R.id.action_save -> {
-
-                return true
-            }
-            R.id.action_clear -> {
-
-                Toast.makeText(applicationContext, "Données supprimée", Toast.LENGTH_SHORT).show()
-
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
+        stopBtn.setOnClickListener {
+            player.playStart(false)
+            playBtn.setImageResource(R.drawable.ic_forward)
+            player.destroy()
         }
     }
 }
