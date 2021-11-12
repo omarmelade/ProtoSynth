@@ -25,17 +25,6 @@
             app:srcCompat="@drawable/ic_forward" />
 
         <ImageButton
-            android:id="@+id/pause"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#00BA1A1A"
-            android:backgroundTint="#E10A0A"
-            android:contentDescription="@string/pause_desc"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_pause" />
-
-        <ImageButton
             android:id="@+id/stop"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

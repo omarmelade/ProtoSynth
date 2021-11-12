@@ -1,9 +1,7 @@
 package com.omarmelade.studio.protosynth
 
 import android.graphics.Color
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_notes.view.*
@@ -13,7 +11,7 @@ class NotesAdapter(
     // la liste modifiable de notes
     private var notes: MutableList<Note>
 
-) : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
+) : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>(){
 
     private var selectedItems : MutableList<Int> = mutableListOf()
 
@@ -58,6 +56,9 @@ class NotesAdapter(
 
         itemV.apply {
             txtViewNotes.text = curNotes.note
+            if(selectedItems.contains(position)){
+                changeColorTxt(itemV, Color.GRAY, Color.WHITE)
+            }
         }
 
         txtViewNotes.setOnClickListener {
@@ -68,19 +69,26 @@ class NotesAdapter(
                 selectedItems.add(position)
                 changeColorTxt(itemV, Color.GRAY, Color.WHITE)
             }
-            println("click")
+            println(selectedItems)
         }
 
-        txtViewNotes.setOnLongClickListener { view ->
-            Toast.makeText(holder.itemView.context, "hello form long click  ", Toast.LENGTH_SHORT)
-                .show()
-            return@setOnLongClickListener true
+        // menu contextuel sur l'item
+
+        txtViewNotes.setOnCreateContextMenuListener { menu, v, menuInfo ->
+                menu.add("COPY").setOnMenuItemClickListener {
+                    changeColorTxt(v, Color.DKGRAY, Color.BLUE)
+                    return@setOnMenuItemClickListener true
+                }
+                menu.add("PASTE").setOnMenuItemClickListener {
+                    return@setOnMenuItemClickListener true
+                }
         }
     }
-
-
 
     override fun getItemCount(): Int {
         return notes.size
     }
+
+    // Context menu OnLongClick on Item
+
 }
