@@ -9,9 +9,16 @@
 #define AMPLITUDE 0.3
 
 
-double Oscillator::freq() const { return frequency; }
-void Oscillator::freq( double f ) { frequency = f; }
 
+
+
+
+// atomic freq can be read and write by functions with predefine rules
+std::atomic <double> dFrequencyOutput = {0.0};
+
+double Oscillator::freq() const { return dFrequencyOutput; }
+
+void Oscillator::freq( double f ) { dFrequencyOutput = f; }
 
 void Oscillator::setSampleRate(int32_t sampleRate) {
     phaseIncrement_ = (TWO_PI * freq()) / (double) sampleRate;
@@ -31,10 +38,10 @@ void Oscillator::render(float *audioData, int32_t numFrames) {
 
             if(isSin()){
                 // Calculates the next sample value for the sine wave.
-                audioData[i] = (float) (cos(phase_) * AMPLITUDE);
+                audioData[i] = (float) (sin(phase_) * AMPLITUDE);
             }else{
                 // Calculates the next sample value for the sine wave.
-                audioData[i] = (float) (sqrt(phase_) * AMPLITUDE);
+                audioData[i] += (float) (sqrt(phase_) * AMPLITUDE);
             }
 
 

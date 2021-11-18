@@ -7,6 +7,7 @@
 #include <thread>
 #include <mutex>
 
+
 // Double-buffering offers a good tradeoff between latency and protection against glitches.
 constexpr int32_t kBufferSizeInBursts = 2;
 

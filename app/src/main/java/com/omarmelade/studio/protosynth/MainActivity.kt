@@ -64,31 +64,30 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val notes = notesAdapter.getAllNotes()
+
         // soundPlayer
-        val player = SoundPlayer()
+        val player = SoundPlayerHandler(notes);
 
         playBtn.setOnClickListener {
-            // On demarre le moteur audio
-            if(!player.getStarted()){
-                player.startAudioEngine();
-            }
+
+            val notes = notesAdapter.getAllNotes()
 
             // on modifie l'image du boutton
-            if(!player.getPlayedBool()){
+            if(player.isAlive){
+                player.interrupt()
                 playBtn.setImageResource(R.drawable.ic_pause)
             }else{
+                player.list = notes
+                player.btn = playBtn;
+                player.running()
                 playBtn.setImageResource(R.drawable.ic_forward)
             }
-
-            val notes = notesAdapter.getAllNotes()  // on recupere la liste des notes
-            System.err.println(notes)
-            player.playSound(notes) // on joue la liste
         }
 
         stopBtn.setOnClickListener {
-            player.playStart(false)
+            player.interrupt()
             playBtn.setImageResource(R.drawable.ic_forward)
-            player.destroy()
         }
     }
 }

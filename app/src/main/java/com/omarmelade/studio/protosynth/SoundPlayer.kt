@@ -15,9 +15,7 @@ class SoundPlayer
             played = !played // on met jouer a True
             playStart(played) // on lance le moteur audio
             // on lance un thread non bloquant
-            thread(start = true, name = "playThread") {
                 playList(list) // on appele playList
-            }
         }
         return true
     }
