@@ -1,7 +1,5 @@
 package com.omarmelade.studio.protosynth
 
-import kotlin.concurrent.thread
-
 class SoundPlayer
 {
     var played = false
@@ -27,14 +25,14 @@ class SoundPlayer
         var pauseZero = played
         while (played && i < max) {
             var prevFreq : Double;
-            var currFreq = list[ i ].frequency
+            var currFreq = list[ i ].freq
 
             if( i < 1){
                 setFreq(currFreq) // on met la frequence a jour la premiere fois
                 prevFreq = currFreq
             }else{
                 // frequence precedente
-                prevFreq = list[ i - 1 ].frequency
+                prevFreq = list[ i - 1 ].freq
             }
 
             if(currFreq != 0.0){
@@ -44,7 +42,7 @@ class SoundPlayer
                 }
 
                 if(prevFreq != currFreq)
-                    setFreq(list[ i ].frequency)
+                    setFreq(list[ i ].freq)
 
             }else{
                 pauseZero = false

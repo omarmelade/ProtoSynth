@@ -64,10 +64,30 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        fast_forwBtn.setOnClickListener {
+            val sel = notesAdapter.selectedItems()
+            val notes = notesAdapter.getAllNotes()
+            for (i in sel) {
+                notes[i] = notes[i].nextOct()
+                notesAdapter.notifyItemChanged(i)
+            }
+        }
+
+        fast_backBtn.setOnClickListener {
+            val sel = notesAdapter.selectedItems()
+            val notes = notesAdapter.getAllNotes()
+            for (i in sel) {
+                notes[i] = notes[i].prevOct()
+                notesAdapter.notifyItemChanged(i)
+            }
+        }
+
         val notes = notesAdapter.getAllNotes()
 
         // soundPlayer
-        val player = SoundPlayerHandler(notes);
+        val player = SoundPlayerHandler(notes)
+
+        player.startEngine()
 
         playBtn.setOnClickListener {
 

@@ -6,9 +6,15 @@ class SoundPlayerHandler(
     list: MutableList<Note>
 ) : Thread() {
 
+
+
     private var soundPlayer = SoundPlayer();
     var list        = list;
     lateinit var btn : ImageButton;
+
+    fun startEngine(){
+        soundPlayer.startAudioEngine()
+    }
 
     fun running(){
         if(this.isAlive) {
