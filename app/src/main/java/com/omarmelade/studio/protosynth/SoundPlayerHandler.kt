@@ -12,6 +12,10 @@ class SoundPlayerHandler(
     var list        = list;
     lateinit var btn : ImageButton;
 
+    fun setisSin(bool: Boolean){
+        soundPlayer.setSinTo(bool)
+    }
+
     fun startEngine(){
         soundPlayer.startAudioEngine()
     }

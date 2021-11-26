@@ -41,7 +41,7 @@ void Oscillator::render(float *audioData, int32_t numFrames) {
                 audioData[i] = (float) (sin(phase_) * AMPLITUDE);
             }else{
                 // Calculates the next sample value for the sine wave.
-                audioData[i] += (float) (sqrt(phase_) * AMPLITUDE);
+                audioData[i] = (float) (sqrt(phase_) * AMPLITUDE);
             }
 
 

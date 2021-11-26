@@ -89,6 +89,10 @@ class SoundPlayer
         started = false
     }
 
+    fun setSinTo(boolean: Boolean){
+        setIsSin(boolean)
+    }
+
     /**
      * Native method to access sound streams
      */

@@ -45,6 +45,16 @@ class MainActivity : AppCompatActivity() {
 
         registerForContextMenu(rvNotesList)
 
+        // notes listes
+        val notes = notesAdapter.getAllNotes()
+        // soundPlayer
+        val player = SoundPlayerHandler(notes)
+        player.startEngine()
+
+        btn_sin_sqrt.setOnClickListener{
+            player.setisSin(!btn_sin_sqrt.isChecked)
+        }
+
         forwBtn.setOnClickListener {
             val sel = notesAdapter.selectedItems()
             //System.err.println("from forw click : $sel")
@@ -82,13 +92,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val notes = notesAdapter.getAllNotes()
-
-        // soundPlayer
-        val player = SoundPlayerHandler(notes)
-
-        player.startEngine()
-
         playBtn.setOnClickListener {
 
             val notes = notesAdapter.getAllNotes()
@@ -109,6 +112,8 @@ class MainActivity : AppCompatActivity() {
             player.interrupt()
             playBtn.setImageResource(R.drawable.ic_forward)
         }
+
+
     }
 }
 
