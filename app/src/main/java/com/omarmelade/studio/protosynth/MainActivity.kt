@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // cree l'adapter avec une liste
-        notesAdapter = NotesAdapter(Note.createNoteList(8))
+        notesAdapter = NotesAdapter(Note.createNoteList(32))
 
 
         val itemDecoration: RecyclerView.ItemDecoration =
