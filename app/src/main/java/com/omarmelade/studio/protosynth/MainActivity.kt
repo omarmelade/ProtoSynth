@@ -1,17 +1,8 @@
 package com.omarmelade.studio.protosynth
 
-import android.Manifest
-import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.*
-import android.view.ContextMenu
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         setContentView(R.layout.activity_main)
 
@@ -48,7 +40,8 @@ class MainActivity : AppCompatActivity() {
         // notes listes
         val notes = notesAdapter.getAllNotes()
         // soundPlayer
-        val player = SoundPlayerHandler(notes)
+        var playing = false
+        val player = SoundPlayerHandler(notes, playing)
         player.startEngine()
 
         btn_sin_sqrt.setOnClickListener{
@@ -92,28 +85,37 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        playBtn.setOnClickListener {
 
+
+        playBtn.setOnClickListener {
+            playBtn.isActivated = false
             val notes = notesAdapter.getAllNotes()
+            notesAdapter.selectedItems = mutableListOf()
+
 
             // on modifie l'image du boutton
-            if(player.isAlive){
+            if(player.playing){
+                System.err.println("stop")
                 player.interrupt()
-                playBtn.setImageResource(R.drawable.ic_pause)
+                playBtn.setImageResource(R.drawable.ic_play_btn)
             }else{
+                System.err.println("start")
                 player.list = notes
                 player.btn = playBtn;
                 player.running()
-                playBtn.setImageResource(R.drawable.ic_forward)
+                playBtn.setImageResource(R.drawable.ic_pause_btn)
+                playBtn.scaleX = 0.75F
+                playBtn.scaleY = 0.75F
             }
+            playBtn.isActivated = true
         }
 
         stopBtn.setOnClickListener {
             player.interrupt()
-            playBtn.setImageResource(R.drawable.ic_forward)
+            playBtn.setImageResource(R.drawable.ic_play_btn)
         }
-
-
     }
+
+
 }
 

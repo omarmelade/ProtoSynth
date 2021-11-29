@@ -3,14 +3,17 @@ package com.omarmelade.studio.protosynth
 import android.widget.ImageButton
 
 class SoundPlayerHandler(
-    list: MutableList<Note>
+    list: MutableList<Note>,
+    playing: Boolean
 ) : Thread() {
 
-
-
-    private var soundPlayer = SoundPlayer();
-    var list        = list;
-    lateinit var btn : ImageButton;
+    var t = Thread{
+        start()
+    }
+    var playing = playing
+    private var soundPlayer = SoundPlayer()
+    var list        = list
+    lateinit var btn : ImageButton
 
     fun setisSin(bool: Boolean){
         soundPlayer.setSinTo(bool)
@@ -20,7 +23,22 @@ class SoundPlayerHandler(
         soundPlayer.startAudioEngine()
     }
 
+    fun stopEngine(){
+        soundPlayer.destroy()
+    }
+
     fun running(){
+
+/*        if(list[0].note != "--"){
+            if(this.isAlive) {
+                this.interrupt()
+            }
+            t.start()
+            if (t.state == State.TERMINATED){
+                playing = false
+                btn.setImageResource(R.drawable.ic_forward)
+            }
+        }*/
         if(this.isAlive) {
             this.interrupt()
         }
@@ -30,17 +48,15 @@ class SoundPlayerHandler(
 
     override fun start() {
         soundPlayer.playSound(list)
-        if (!soundPlayer.played) {
-            setBtnToPlay()
-        }
+        playing = soundPlayer.played
     }
 
-    private fun setBtnToPlay() {
-        btn.setImageResource(R.drawable.ic_forward)
-    }
 
     override fun interrupt() {
-        soundPlayer.playStart(false)
-        setBtnToPlay()
+/*        if(t.isAlive){*/
+            soundPlayer.playStart(false)
+/*            t.join()
+        }*/
+        playing = soundPlayer.played
     }
 }

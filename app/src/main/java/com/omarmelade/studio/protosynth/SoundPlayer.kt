@@ -8,12 +8,12 @@ class SoundPlayer
 
     fun playSound(list: MutableList<Note>): Boolean {
         // si le player ne joue pas & la liste n'est pas vide
-        if(!played && list.isNotEmpty()){
+        if(!played){
 
             played = !played // on met jouer a True
             playStart(played) // on lance le moteur audio
             // on lance un thread non bloquant
-                playList(list) // on appele playList
+            playList(list) // on appele playList
         }
         return true
     }

@@ -13,7 +13,7 @@ class NotesAdapter(
 
 ) : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>(){
 
-    private var selectedItems : MutableList<Int> = mutableListOf()
+    var selectedItems : MutableList<Int> = mutableListOf()
 
     // le view holder permet de gerer les elements affiché de la liste
     class NotesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -54,20 +54,22 @@ class NotesAdapter(
         var txtViewNotes = holder.itemView.tvNotes
         var itemV = holder.itemView
 
+
         itemV.apply {
             txtViewNotes.text = curNotes.note
             if(selectedItems.contains(position)){
-                changeColorTxt(itemV, Color.GRAY, Color.WHITE)
+                changeColorTxt(itemV, Color.parseColor("#6d9f71") , Color.WHITE)
+                itemV.isSelected = true
             }
         }
 
         txtViewNotes.setOnClickListener {
             if (selectedItems.contains(position)) {
                 selectedItems.remove(position)
-                changeColorTxt(itemV, Color.WHITE, Color.GRAY)
+                changeColorTxt(itemV, Color.WHITE, Color.parseColor("#6d9f71"))
             } else {
                 selectedItems.add(position)
-                changeColorTxt(itemV, Color.GRAY, Color.WHITE)
+                changeColorTxt(itemV, Color.parseColor("#6d9f71") , Color.WHITE)
             }
             println(selectedItems)
         }

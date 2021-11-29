@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.ProtoSynth.Player">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -12,7 +13,8 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
         <ImageButton
             android:id="@+id/playBtn"
@@ -22,7 +24,10 @@
             android:background="#00FA0000"
             android:contentDescription="@string/play_desc"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_forward" />
+            app:srcCompat="@drawable/ic_play_btn"
+            android:scaleX="0.75"
+            android:scaleY="0.75"
+            android:theme="@style/Theme.ProtoSynth.Player"/>
 
         <ImageButton
             android:id="@+id/stopBtn"
@@ -32,7 +37,10 @@
             android:background="#00FFFFFF"
             android:contentDescription="@string/stop_desc"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_stop" />
+            app:srcCompat="@drawable/ic_stop_btn"
+            android:scaleX="0.75"
+            android:scaleY="0.75"
+            android:theme="@style/Theme.ProtoSynth.Player"/>
 
     </LinearLayout>
 
@@ -52,7 +60,10 @@
             android:contentDescription="@string/fast_backward_desc"
             android:rotation="180"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_fast_forward" />
+            app:srcCompat="@drawable/ic_fast_forw_btn"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:theme="@style/Theme.ProtoSynth.Player"/>
 
         <ImageButton
             android:id="@+id/backBtn"
@@ -63,7 +74,10 @@
             android:contentDescription="@string/backward_desc"
             android:rotation="180"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_forward" />
+            app:srcCompat="@drawable/ic_forw_btn"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:theme="@style/Theme.ProtoSynth.Player"/>
 
         <ImageButton
             android:id="@+id/recordBtn"
@@ -73,7 +87,10 @@
             android:background="#00FFFFFF"
             android:contentDescription="@string/record_desc"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_record" />
+            app:srcCompat="@drawable/ic_record_btn"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:theme="@style/Theme.ProtoSynth.Player"/>
 
         <ImageButton
             android:id="@+id/forwBtn"
@@ -83,7 +100,10 @@
             android:background="#00FFFFFF"
             android:contentDescription="@string/forward_desc"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_forward" />
+            app:srcCompat="@drawable/ic_forw_btn"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:theme="@style/Theme.ProtoSynth.Player"/>
 
         <ImageButton
             android:id="@+id/fast_forwBtn"
@@ -93,7 +113,10 @@
             android:background="#00FFFFFF"
             android:contentDescription="@string/fast_forward_desc"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_fast_forward" />
+            app:srcCompat="@drawable/ic_fast_forw_btn"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:theme="@style/Theme.ProtoSynth.Player"/>
 
     </LinearLayout>
 
