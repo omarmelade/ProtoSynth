@@ -10,6 +10,7 @@ class SoundPlayerHandler(
     var t = Thread{
         start()
     }
+
     var playing = playing
     private var soundPlayer = SoundPlayer()
     var list        = list
@@ -28,21 +29,16 @@ class SoundPlayerHandler(
     }
 
     fun running(){
-
-/*        if(list[0].note != "--"){
-            if(this.isAlive) {
-                this.interrupt()
+        try {
+            t.start()
+        }catch (e: IllegalThreadStateException){
+            t.interrupt()
+            t = Thread{
+                start()
             }
             t.start()
-            if (t.state == State.TERMINATED){
-                playing = false
-                btn.setImageResource(R.drawable.ic_forward)
-            }
-        }*/
-        if(this.isAlive) {
-            this.interrupt()
         }
-        this.start()
+        playing = false
     }
 
 
@@ -53,10 +49,10 @@ class SoundPlayerHandler(
 
 
     override fun interrupt() {
-/*        if(t.isAlive){*/
+        if(t.isAlive){
             soundPlayer.playStart(false)
-/*            t.join()
-        }*/
+            t.interrupt()
+        }
         playing = soundPlayer.played
     }
 }

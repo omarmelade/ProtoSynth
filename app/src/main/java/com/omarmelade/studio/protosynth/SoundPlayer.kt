@@ -49,7 +49,11 @@ class SoundPlayer
                 playStart(pauseZero)
             }
 
-            Thread.sleep(tempo)
+            try {
+                Thread.sleep(tempo)
+            }catch (e:InterruptedException){
+                Thread.currentThread().interrupt()
+            }
 
             i++
         }

@@ -23,8 +23,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // cree l'adapter avec une liste
-        notesAdapter = NotesAdapter(Note.createNoteList(32))
+        notesAdapter = NotesAdapter(Note.createNoteList(8))
 
+        // not really usefull but i have to work on stable ids in my list
+        notesAdapter.setHasStableIds(true)
 
         val itemDecoration: RecyclerView.ItemDecoration =
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
@@ -50,7 +52,6 @@ class MainActivity : AppCompatActivity() {
 
         forwBtn.setOnClickListener {
             val sel = notesAdapter.selectedItems()
-            //System.err.println("from forw click : $sel")
             val notes = notesAdapter.getAllNotes()
             for (i in sel) {
                 notes[i] = notes[i].next()
@@ -88,7 +89,6 @@ class MainActivity : AppCompatActivity() {
 
 
         playBtn.setOnClickListener {
-            playBtn.isActivated = false
             val notes = notesAdapter.getAllNotes()
             notesAdapter.selectedItems = mutableListOf()
 
@@ -107,7 +107,6 @@ class MainActivity : AppCompatActivity() {
                 playBtn.scaleX = 0.75F
                 playBtn.scaleY = 0.75F
             }
-            playBtn.isActivated = true
         }
 
         stopBtn.setOnClickListener {
