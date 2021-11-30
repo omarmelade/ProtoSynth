@@ -63,7 +63,7 @@ class NotesAdapter(
             }
         }
 
-        itemV.tvNotes.setOnClickListener {
+        itemV.setOnClickListener {
             println("before : $selectedItems")
             println( "id :" + getItemId(position))
             if (selectedItems.contains(position)) {
