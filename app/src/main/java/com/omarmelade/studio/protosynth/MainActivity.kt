@@ -57,40 +57,59 @@ class MainActivity : AppCompatActivity() {
         forwBtn.setOnClickListener {
             val sel = notesAdapter.selectedItems()
             val notes = notesAdapter.getAllNotes()
-            for (i in sel) {
-                notes[i] = notes[i].next()
-                // better way to do, update only one elements
-                // notesAdapter.notifyItemChanged(i)
+
+            if( sel.isNotEmpty() ){
+
+                for (i in sel) {
+                    notes[i] = notes[i].next()
+                    // better way to do, update only one elements
+                    // notesAdapter.notifyItemChanged(i)
+                }
+                // reload everything to prevent id change
+                notesAdapter.notifyDataSetChanged()
+
             }
-            // reload everything to prevent id change
-            notesAdapter.notifyDataSetChanged()
         }
 
         backBtn.setOnClickListener {
             val sel = notesAdapter.selectedItems()
             val notes = notesAdapter.getAllNotes()
-            for (i in sel) {
-                notes[i] = notes[i].prev()
+
+            if( sel.isNotEmpty() ) {
+
+                for (i in sel) {
+                    notes[i] = notes[i].prev()
+                }
+                notesAdapter.notifyDataSetChanged()
+
             }
-            notesAdapter.notifyDataSetChanged()
         }
 
         fast_forwBtn.setOnClickListener {
             val sel = notesAdapter.selectedItems()
             val notes = notesAdapter.getAllNotes()
-            for (i in sel) {
-                notes[i] = notes[i].nextOct()
+
+            if( sel.isNotEmpty() ) {
+
+                for (i in sel) {
+                    notes[i] = notes[i].nextOct()
+                }
+                notesAdapter.notifyDataSetChanged()
+
             }
-            notesAdapter.notifyDataSetChanged()
         }
 
         fast_backBtn.setOnClickListener {
             val sel = notesAdapter.selectedItems()
             val notes = notesAdapter.getAllNotes()
-            for (i in sel) {
-                notes[i] = notes[i].prevOct()
+            if( sel.isNotEmpty() ) {
+
+                for (i in sel) {
+                    notes[i] = notes[i].prevOct()
+                }
+                notesAdapter.notifyDataSetChanged()
+
             }
-            notesAdapter.notifyDataSetChanged()
         }
 
         // ----------------------- gestion du player
