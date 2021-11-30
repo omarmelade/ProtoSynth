@@ -30,6 +30,10 @@ class NotesAdapter(
         return holder
     }
 
+    override fun getItemId(position: Int): Long {
+        return (position * 2.2).hashCode().toLong()
+    }
+
     fun getAllNotes(): MutableList<Note> {
         return notes
     }

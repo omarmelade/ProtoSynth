@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // cree l'adapter avec une liste
-        notesAdapter = NotesAdapter(Note.createNoteList(16))
+        notesAdapter = NotesAdapter(Note.createNoteList(32))
+        notesAdapter.setHasStableIds(true)
 
         // not really usefull but i have to work on stable ids in my list
 
