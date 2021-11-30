@@ -26,10 +26,10 @@ class MainActivity : AppCompatActivity() {
         notesAdapter = NotesAdapter(Note.createNoteList(16))
 
         // not really usefull but i have to work on stable ids in my list
-        notesAdapter.setHasStableIds(true)
 
         val itemDecoration: RecyclerView.ItemDecoration =
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+
         rvNotesList.addItemDecoration(itemDecoration)
 
 
@@ -59,8 +59,11 @@ class MainActivity : AppCompatActivity() {
             val notes = notesAdapter.getAllNotes()
             for (i in sel) {
                 notes[i] = notes[i].next()
-                notesAdapter.notifyItemChanged(i)
+                // better way to do, update only one elements
+                // notesAdapter.notifyItemChanged(i)
             }
+            // reload everything to prevent id change
+            notesAdapter.notifyDataSetChanged()
         }
 
         backBtn.setOnClickListener {
@@ -68,8 +71,8 @@ class MainActivity : AppCompatActivity() {
             val notes = notesAdapter.getAllNotes()
             for (i in sel) {
                 notes[i] = notes[i].prev()
-                notesAdapter.notifyItemChanged(i)
             }
+            notesAdapter.notifyDataSetChanged()
         }
 
         fast_forwBtn.setOnClickListener {
@@ -77,8 +80,8 @@ class MainActivity : AppCompatActivity() {
             val notes = notesAdapter.getAllNotes()
             for (i in sel) {
                 notes[i] = notes[i].nextOct()
-                notesAdapter.notifyItemChanged(i)
             }
+            notesAdapter.notifyDataSetChanged()
         }
 
         fast_backBtn.setOnClickListener {
@@ -86,8 +89,8 @@ class MainActivity : AppCompatActivity() {
             val notes = notesAdapter.getAllNotes()
             for (i in sel) {
                 notes[i] = notes[i].prevOct()
-                notesAdapter.notifyItemChanged(i)
             }
+            notesAdapter.notifyDataSetChanged()
         }
 
         // ----------------------- gestion du player

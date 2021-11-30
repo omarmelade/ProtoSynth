@@ -26,12 +26,9 @@ class NotesAdapter(
                 false
             )
         )
-
+        holder.setIsRecyclable(false)
         return holder
     }
-
-
-    override fun getItemId(position: Int): Long = position.hashCode().toLong()
 
     fun getAllNotes(): MutableList<Note> {
         return notes
