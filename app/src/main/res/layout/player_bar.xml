@@ -18,29 +18,29 @@
 
         <ImageButton
             android:id="@+id/playBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#00FA0000"
             android:contentDescription="@string/play_desc"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_play_btn"
             android:scaleX="0.75"
             android:scaleY="0.75"
-            android:theme="@style/Theme.ProtoSynth.Player"/>
+            android:theme="@style/Theme.ProtoSynth.Player"
+            app:srcCompat="@drawable/ic_play_btn" />
 
         <ImageButton
             android:id="@+id/stopBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:contentDescription="@string/stop_desc"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_stop_btn"
             android:scaleX="0.75"
             android:scaleY="0.75"
-            android:theme="@style/Theme.ProtoSynth.Player"/>
+            android:theme="@style/Theme.ProtoSynth.Player"
+            app:srcCompat="@drawable/ic_stop_btn" />
 
     </LinearLayout>
 

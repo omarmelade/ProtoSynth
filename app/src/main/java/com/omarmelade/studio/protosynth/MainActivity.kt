@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // cree l'adapter avec une liste
-        notesAdapter = NotesAdapter(Note.createNoteList(8))
+        notesAdapter = NotesAdapter(Note.createNoteList(16))
 
         // not really usefull but i have to work on stable ids in my list
         notesAdapter.setHasStableIds(true)
@@ -37,7 +37,9 @@ class MainActivity : AppCompatActivity() {
         rvNotesList.adapter = notesAdapter
         rvNotesList.layoutManager = LinearLayoutManager(this)
 
+
         registerForContextMenu(rvNotesList)
+
 
         // notes listes
         val notes = notesAdapter.getAllNotes()
@@ -49,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         btn_sin_sqrt.setOnClickListener{
             player.setisSin(!btn_sin_sqrt.isChecked)
         }
+
+        // ----------------------- changement de notes
 
         forwBtn.setOnClickListener {
             val sel = notesAdapter.selectedItems()
@@ -86,11 +90,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
+        // ----------------------- gestion du player
 
         playBtn.setOnClickListener {
             val notes = notesAdapter.getAllNotes()
-            notesAdapter.selectedItems = mutableListOf()
 
 
             // on modifie l'image du boutton
