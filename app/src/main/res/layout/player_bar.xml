@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="56dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,8 +24,8 @@
             android:background="#00FA0000"
             android:contentDescription="@string/play_desc"
             android:scaleType="fitCenter"
-            android:scaleX="0.75"
-            android:scaleY="0.75"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
             android:theme="@style/Theme.ProtoSynth.Player"
             app:srcCompat="@drawable/ic_play_btn" />
 
@@ -37,8 +37,8 @@
             android:background="#00FFFFFF"
             android:contentDescription="@string/stop_desc"
             android:scaleType="fitCenter"
-            android:scaleX="0.75"
-            android:scaleY="0.75"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
             android:theme="@style/Theme.ProtoSynth.Player"
             app:srcCompat="@drawable/ic_stop_btn" />
 
@@ -47,7 +47,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="56dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -61,8 +61,8 @@
             android:rotation="180"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_fast_forw_btn"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
             android:theme="@style/Theme.ProtoSynth.Player"/>
 
         <ImageButton
@@ -75,8 +75,8 @@
             android:rotation="180"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_forw_btn"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
             android:theme="@style/Theme.ProtoSynth.Player"/>
 
         <ImageButton
@@ -88,8 +88,8 @@
             android:contentDescription="@string/record_desc"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_record_btn"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
+            android:scaleX="0.35"
+            android:scaleY="0.35"
             android:theme="@style/Theme.ProtoSynth.Player"/>
 
         <ImageButton
@@ -101,8 +101,8 @@
             android:contentDescription="@string/forward_desc"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_forw_btn"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
             android:theme="@style/Theme.ProtoSynth.Player"/>
 
         <ImageButton
@@ -114,8 +114,8 @@
             android:contentDescription="@string/fast_forward_desc"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_fast_forw_btn"
-            android:scaleX="0.6"
-            android:scaleY="0.6"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
             android:theme="@style/Theme.ProtoSynth.Player"/>
 
     </LinearLayout>

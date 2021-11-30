@@ -130,8 +130,8 @@ class MainActivity : AppCompatActivity() {
                 player.btn = playBtn;
                 player.running()
                 playBtn.setImageResource(R.drawable.ic_pause_btn)
-                playBtn.scaleX = 0.75F
-                playBtn.scaleY = 0.75F
+                playBtn.scaleX = 0.5F
+                playBtn.scaleY = 0.5F
             }
         }
 
