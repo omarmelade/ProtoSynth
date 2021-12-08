@@ -6,5 +6,5 @@ Of course you can play thoses notes, for now the list is locked to 8 but it's ju
 I'm really happy about making this but i hope this project will go further because at this point it's just a funny thing.
 
 #### our team :
-dev : me
-the musician behind me : renod_babek
+dev : me<br>
+the musician behind : renod_babek
