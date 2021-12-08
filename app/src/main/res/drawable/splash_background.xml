@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/sand_white" />
+    <item android:drawable="@drawable/logo" android:gravity="center"/>
+    <item android:drawable="@drawable/ic_omarmelade_stud" android:gravity="bottom"
+        android:height="71dp" android:width="236dp"
+        android:start="40pt"
+        android:bottom="71dp"
+        ></item>
+</layer-list>

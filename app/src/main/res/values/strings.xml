@@ -22,4 +22,6 @@
     <string name="play_desc">play</string>
     <string name="pause_desc">pause</string>
     <string name="stop_desc">stop</string>
+    <string name="action_settings">settings</string>
+    <string name="checkbox">checkbox</string>
 </resources>

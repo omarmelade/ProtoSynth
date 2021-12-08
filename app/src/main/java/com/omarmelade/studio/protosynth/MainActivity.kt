@@ -1,6 +1,9 @@
 package com.omarmelade.studio.protosynth
 
 import android.os.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -15,13 +18,14 @@ import kotlinx.coroutines.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var notesAdapter: NotesAdapter
+    private var selectAll = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
         setContentView(R.layout.activity_main)
-
         // cree l'adapter avec une liste
         notesAdapter = NotesAdapter(Note.createNoteList(32))
         notesAdapter.setHasStableIds(true)
@@ -141,6 +145,51 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+   /* override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_action_bar, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+
+        R.id.action_settings -> {
+            // User chose the "Settings" item, show the app settings UI...
+            true
+        }
+
+        R.id.checkbox -> {
+            if(selectAll){
+                selectAll = false
+                unselectAllElements()
+            }else{
+                selectAll = true
+                selectAllElements()
+            }
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }*/
+
+    private fun selectAllElements(){
+        val notes = notesAdapter.getAllNotes()
+        val selNotes = notesAdapter.selectedItems()
+        for(i in 0..notes.size)
+        {
+
+            selNotes.add(i)
+        }
+        notesAdapter.notifyDataSetChanged()
+    }
+
+    private fun unselectAllElements(){
+        notesAdapter.selectedItems = mutableListOf()
+        notesAdapter.notifyDataSetChanged()
+    }
 
 }
 

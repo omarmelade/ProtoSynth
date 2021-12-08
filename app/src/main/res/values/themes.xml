@@ -22,4 +22,16 @@
     <style name="Theme.ProtoSynth.Player.itemNote" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="android:backgroundTint">@color/sand_white</item>
     </style>
+
+    <style name="SplashScreen" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+
+        <item name="android:imeActionLabel">@drawable/ic_omarmelade_stud</item>
+
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
 </resources>

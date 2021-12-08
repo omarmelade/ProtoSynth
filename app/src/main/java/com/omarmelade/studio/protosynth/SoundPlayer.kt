@@ -3,7 +3,7 @@ package com.omarmelade.studio.protosynth
 class SoundPlayer
 {
     var played = false
-    private var tempo: Long = 500
+    private var tempo: Long = 200
     private var started = false
 
     fun playSound(list: MutableList<Note>): Boolean {

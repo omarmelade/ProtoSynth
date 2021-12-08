@@ -66,6 +66,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:input:3.3.0'
     // Material Files
     implementation 'com.afollestad.material-dialogs:files:3.2.1'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
